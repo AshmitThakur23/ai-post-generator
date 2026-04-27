@@ -293,8 +293,6 @@ Tracked placeholders keep folder structure:
 
 Made by Ashmit Thakur.
 
-- GitHub: https://github.com/AshmitThakur23
-- Project: https://github.com/AshmitThakur23/ai-post-generator
 
 ## Final Note
 
