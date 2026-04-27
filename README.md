@@ -4,10 +4,32 @@ Generate professional social media infographics from real trends and posts.
 
 This project runs a complete AI pipeline from data discovery to final downloadable assets.
 
+Created and maintained by Ashmit Thakur.
+
 - Input: trending topics or selected real posts
 - Intelligence: template detection + content planning + AI writing
 - Visual output: AI source image + high-quality rendered poster
 - Delivery: static PNG, animated GIF, downloadable ZIP package
+
+If this project helps you, please star the repository.
+
+## Table of Contents
+
+- Why This Project
+- Product Preview
+- System Architecture
+- Request Lifecycle
+- Output Mode Logic
+- Project Timeline
+- Core Capabilities
+- Prompt Engineering Design
+- API Quick Reference
+- Quick Start
+- Repository Map
+- Clean GitHub Push Rules
+- Troubleshooting
+- Creator
+- Final Note
 
 ## Why This Project
 
@@ -105,6 +127,17 @@ flowchart TD
     A3 --> A4[FFmpeg GIF export]
     A4 --> A5[Return GIF + ZIP]
 ```
+
+  ## Project Timeline
+
+  ```mermaid
+  flowchart LR
+    P1[Phase 1\nData Ingestion\nTrendEngine + PostFetcher] -->
+    P2[Phase 2\nDecision Intelligence\nTemplate Detector + Planner] -->
+    P3[Phase 3\nAI Generation\nGroq/Gemini + Cloudflare] -->
+    P4[Phase 4\nRendering Pipeline\nHTML + Frames + FFmpeg] -->
+    P5[Phase 5\nExport + UX\nDownloads + Tweak Panel]
+  ```
 
 ## Core Capabilities
 
@@ -255,6 +288,19 @@ Tracked placeholders keep folder structure:
 - GIF export issues: ensure imageio-ffmpeg is installed from requirements.txt.
 - Missing image generation: verify Cloudflare credentials in .env.
 - LLM fallback behavior: Groq is primary, Gemini is fallback in content generation.
+
+## Creator
+
+Made by Ashmit Thakur.
+
+- GitHub: https://github.com/AshmitThakur23
+- Project: https://github.com/AshmitThakur23/ai-post-generator
+
+## Final Note
+
+This project is built to make AI content creation understandable, controllable, and production-ready.
+
+From trend discovery to final visual export, every stage is designed for clarity, quality, and practical use.
 
 ## License
 
