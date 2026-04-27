@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Pipeline</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+    <!-- PIPELINE FLOW -->
+    <div class="pipeline-bar">
+        <div class="pipe-step" id="ps-trends">1 Trends</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-posts">2 Posts</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-decide">3 Decide</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-content">4 Content</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-html">5 HTML</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-frames">6 Frames</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-ffmpeg">7 FFmpeg</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" id="ps-format">8 Format</div>
+    </div>
+
+    <div class="container">
+        <h1>AI Content Pipeline</h1>
+        <p class="subtitle">A→B→C→D→E→F→G: Trends → Decision → Content+Image → HTML → Frames → FFmpeg → Format Router → ZIP (PNG + GIF focus)</p>
+
+        <!-- ZONE A: DATA STATUS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Zone A — Data Sources (auto-refresh 1hr)</h2>
+                <button id="btn-zone-a-refresh" onclick="refreshZoneA()">Refresh</button>
+            </div>
+            <div id="status-bar" class="status-bar">
+                <div class="source-badge" id="src-linkedin"><span class="dot"></span> LinkedIn: ?</div>
+                <div class="source-badge" id="src-twitter"><span class="dot"></span> Twitter: ?</div>
+                <div class="source-badge" id="src-devto"><span class="dot"></span> Dev.to: ?</div>
+                <div class="source-badge" id="src-reddit"><span class="dot"></span> Reddit: ?</div>
+                <div class="source-badge" id="src-hashnode"><span class="dot"></span> Hashnode: ?</div>
+                <div class="source-badge" id="src-hackernews"><span class="dot"></span> HackerNews: ?</div>
+            </div>
+        </div>
+
+        <!-- ZONE A: TRENDS + POSTS + SCRAPED TEMPLATES -->
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Trending Topics</h2>
+                    <button onclick="loadTrends()" id="btn-trends">Load</button>
+                </div>
+                <div id="trends-list" class="list-area"><p class="placeholder">Auto-loading...</p></div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Real Posts (6 sources)</h2>
+                    <button onclick="loadPosts()" id="btn-posts">Load</button>
+                </div>
+                <div id="posts-list" class="list-area"><p class="placeholder">Auto-loading...</p></div>
+            </div>
+        </div>
+
+        <!-- SCRAPED TEMPLATE GALLERY -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Template Gallery (LinkedIn + Twitter priority)</h2>
+                <button onclick="loadScrapedTemplates()" id="btn-templates">Load Templates</button>
+            </div>
+            <div class="template-controls">
+                <div id="templates-stats" class="templates-stats">Templates: loading...</div>
+                <div class="template-filter-buttons">
+                    <button id="filter-priority" class="template-filter-btn active" onclick="setTemplateFilter('priority')">Priority (LinkedIn + Twitter)</button>
+                    <button id="filter-linkedin" class="template-filter-btn" onclick="setTemplateFilter('linkedin')">LinkedIn</button>
+                    <button id="filter-twitter" class="template-filter-btn" onclick="setTemplateFilter('twitter')">Twitter</button>
+                    <button id="filter-all" class="template-filter-btn" onclick="setTemplateFilter('all')">All Sources</button>
+                </div>
+            </div>
+            <div id="template-gallery" class="template-gallery"><p class="placeholder">Click "Load Templates" to see scraped post templates</p></div>
+            <div id="selected-templates-info" class="selected-templates-info">Selected templates: 0</div>
+        </div>
+
+        <!-- ZONE B+E: GENERATE WITH FORMAT CHOICE -->
+        <div class="card" id="generate-card">
+            <div class="card-header"><h2>Zone B — Run Pipeline</h2></div>
+            <div class="generate-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Topic</label>
+                        <input type="text" id="input-topic" placeholder="e.g. Kubernetes vs Docker Swarm">
+                        <div class="topic-helper-row">
+                            <button type="button" class="btn-secondary" onclick="useTopTrend()">Use Top Trend</button>
+                            <span class="topic-helper-text">or click any trend from the list above</span>
+                        </div>
+                        <div id="quick-trend-chips" class="quick-trend-chips"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Platform</label>
+                        <select id="input-platform">
+                            <option value="linkedin">LinkedIn (1200×1500)</option>
+                            <option value="instagram">Instagram (1080×1080)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="format-choice">
+                    <label class="format-label">Zone E — Choose Output Format:</label>
+                    <div class="format-options">
+                        <label class="format-option" id="opt-png">
+                            <input type="radio" name="output-format" value="png" checked>
+                            <div class="format-card">
+                                <div class="format-icon">🖼️</div>
+                                <div class="format-name">Static PNG</div>
+                                <div class="format-desc">1 high-res screenshot — fast, clean</div>
+                                <div class="format-apis">Groq + Cloudflare</div>
+                            </div>
+                        </label>
+                        <label class="format-option" id="opt-gif">
+                            <input type="radio" name="output-format" value="gif">
+                            <div class="format-card">
+                                <div class="format-icon">✨</div>
+                                <div class="format-name">Animated GIF</div>
+                                <div class="format-desc">Flowing SVG animations — eye-catching</div>
+                                <div class="format-apis">Groq + Cloudflare + Gemini + FFmpeg</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-top:10px;">
+                    <div class="form-group" style="flex:0 0 auto;">
+                        <button onclick="runFullPipeline()" id="btn-generate" class="btn-primary">🚀 Run Full Pipeline</button>
+                    </div>
+                    <div class="api-status">
+                        <span class="api-badge groq">Groq ✓</span>
+                        <span class="api-badge gemini">Gemini ✓</span>
+                        <span class="api-badge cloudflare">Cloudflare ✓</span>
+                    </div>
+                </div>
+            </div>
+            <div id="progress-area" style="display:none;">
+                <div id="progress-steps" class="progress-steps"></div>
+            </div>
+        </div>
+
+
+        <!-- ========= RESULTS ========= -->
+        <div id="results-area" style="display:none;">
+
+            <!-- ZONE F: TWEAK PANEL -->
+            <div class="card" id="tweak-card">
+                <div class="card-header">
+                    <h2>Zone F — Tweak Panel</h2>
+                    <button onclick="applyTweaks()" class="btn-primary" style="padding:6px 16px">Apply Tweaks</button>
+                </div>
+                <div class="tweak-panel">
+                    <div class="tweak-row">
+                        <div class="tweak-group">
+                            <label>Background</label>
+                            <input type="color" id="tweak-bg" value="#0a0a0a">
+                        </div>
+                        <div class="tweak-group">
+                            <label>Accent</label>
+                            <input type="color" id="tweak-accent" value="#4fc3f7">
+                        </div>
+                        <div class="tweak-group">
+                            <label>Text Color</label>
+                            <input type="color" id="tweak-text" value="#e8e8e8">
+                        </div>
+                        <div class="tweak-group" style="flex:2">
+                            <label>Edit Title</label>
+                            <input type="text" id="tweak-title" placeholder="Leave blank to keep original">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ZONE D: HTML PREVIEW -->
+            <div class="card" id="html-card">
+                <div class="card-header"><h2>Zone D — Animated HTML Infographic</h2></div>
+                <div class="preview-container">
+                    <iframe id="html-preview" class="infographic-iframe"></iframe>
+                </div>
+            </div>
+
+            <!-- ZONE E: DOWNLOADS -->
+            <div class="card">
+                <div class="card-header"><h2>Zone E + G — Downloads</h2></div>
+                <div id="download-area" class="download-area">
+                    <div id="download-files"></div>
+                </div>
+            </div>
+
+            <!-- POST TEXT + IMAGE -->
+            <div class="row">
+                <div class="card">
+                    <div class="card-header"><h2>Generated Post Text</h2></div>
+                    <div class="result-meta" id="result-meta"></div>
+                    <pre id="result-post" class="post-preview"></pre>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h2>AI Image (Cloudflare)</h2></div>
+                    <div id="result-image-area">
+                        <img id="result-image" src="" style="display:none;">
+                    </div>
+                    <div class="generated-image-history-title">Recent Generated Images</div>
+                    <div id="result-image-history" class="generated-image-history">
+                        <p class="placeholder">Generated images will appear here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAW DATA -->
+            <details class="card">
+                <summary class="card-header"><h2 style="display:inline">Raw Pipeline Data (debug)</h2></summary>
+                <pre id="result-raw" class="raw-json"></pre>
+            </details>
+        </div>
+    </div>
+
+    <script src="/frontend/app.js"></script>
+</body>
+</html>
