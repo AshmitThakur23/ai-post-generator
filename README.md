@@ -302,4 +302,31 @@ From trend discovery to final visual export, every stage is designed for clarity
 
 ## License
 
-Add your preferred license here.
+.Copyright (c) 2026 Ashmit Thakur. All rights reserved.
+
+This repository is provided for educational and reference purposes only.
+
+PERMITTED:
+
+* You may view and download the code for personal learning.
+* You may fork this repository on GitHub.
+* You may submit issues, suggestions, and pull requests.
+
+RESTRICTIONS:
+
+* You may NOT use this code in any personal, academic, or commercial project.
+* You may NOT publish, distribute, or re-upload this code (in whole or in part).
+* You may NOT use this code to build or showcase your own applications.
+* You may NOT claim this code as your own work.
+
+ATTRIBUTION:
+If you are explicitly permitted to share any part of this code, you must give clear credit at the beginning:
+
+"Original code by Ashmit Thakur (2026)"
+
+NO LICENSE:
+Only the permissions listed above are allowed. Any other use is strictly prohibited.
+
+ENFORCEMENT:
+If you violate these terms, the copyright holder may take appropriate legal action.
+
